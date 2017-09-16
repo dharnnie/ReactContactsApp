@@ -1,7 +1,32 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import {render} from "react-dom"
+import 'whatwg-fetch'
 
+class ContactsAppContainer extends Component {
+  constructor() {
+    super();
+    this.state = {
+      contacts: []
+    };
+  }
+componentDidMount(){
+  fetch('public/contacts.json')
+  .then((response) => response.json())
+  .then((responseData) => {
+    console.log(responseData);
+    this.setState({contacts:responseData});
+  })
+    .catch((error) => {
+      console.log('Error fetching and parsing data', error);
+    });
+  }
+  render(){
+    return(
+      <ContactsApp contacts={this.state.contacts}/>
+    );
+  }
+}
 class ContactsApp extends Component{
   constructor(){
     super();
@@ -58,12 +83,12 @@ class ContactItem extends Component{
   }
 }
 
-let contacts = [
- { name: "Odun Osineye", email: "odun@osineye.com" },
- { name: "Daniel Osineye", email: "daniel@osineye.com" },
- { name: "Lola Osineye", email: "lola@osineye.com" },
- { name: "Toyin Osineye", email: "toyin@osineye.com" },
- { name: "Kehinde Osineye", email: "ken@osineye.com" },
-]
+// let contacts = [
+//  { name: "Odun Osineye", email: "odun@osineye.com" },
+//  { name: "Daniel Osineye", email: "daniel@osineye.com" },
+//  { name: "Lola Osineye", email: "lola@osineye.com" },
+//  { name: "Toyin Osineye", email: "toyin@osineye.com" },
+//  { name: "Kehinde Osineye", email: "ken@osineye.com" },
+// ]
 
-render(<ContactsApp contacts = {contacts}/>, document.getElementById("root"))
+render(<ContactsAppContainer />, document.getElementById("root"))
